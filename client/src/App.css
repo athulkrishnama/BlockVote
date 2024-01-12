@@ -1,0 +1,68 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(15px);
+    width: 30vw;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    border-radius: 2rem;
+    padding: 4rem;
+}
+
+.loginContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('https://images8.alphacoders.com/123/1239285.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.inputfield{
+    width: 90%;
+    padding: 1rem;
+}
+
+.inputfield input{
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    border-bottom: 1px solid white;
+    font-size: 2rem;
+    color: inherit;
+}
+
+
+
+.loginBtn button{
+    font-size: 2rem;
+    background-color: transparent;
+    border: 3px solid transparent;
+    padding: 0.3rem;
+    margin: 1rem;
+    color: white;
+    border-radius: 0.4rem;
+}
+
+.loginBtn button:hover{
+    transition-duration: 0.2s;
+    border: 3px solid white;
+}
+.loginBtn :nth-child(2){
+    font-size: 1rem;
+}
+.loginBtn :nth-child(2):hover{
+    border: none;
+    border-bottom: 3px solid white;
+    border-radius: 0;
+}
