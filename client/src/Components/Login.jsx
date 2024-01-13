@@ -1,44 +1,71 @@
 import React, { useContext } from "react";
-import { AppContest } from "../context";
+import { AppContext } from "../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../axios";
 
 function Login() {
-  const loginstatus = useContext(AppContest);
-  const [user, setUser] = useState({});
+  //context of loginstatus {login, msg}
+  const status = useContext(AppContext);
+
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState({ email: "", password: "" });
+
+  //function to handle change data in the input field 
+  // data is updated in the user usestate
+  // [name]:value update the key value pair
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
-  const logIn = () => {};
-  const navigate = useNavigate()
+
+  // Login function
+  // context status will be set to login true after successful login
+  const logIn = () => {
+    // check fields are isempty
+    if (user.email == "" || user.password == "") {
+      status.setStatus({ ...status.status, msg: "field should not be empty" });
+    } else {
+      axios
+        .post("/login", user)
+        .then((data) => {
+          status.setStatus({ ...status.status, login: true });
+          navigate("/");
+        })
+        // if login failed set msg to status context
+        .catch((e) => {
+          status.setStatus({...status.status, msg:e.response.data.message})
+        });
+    }
+  };
   return (
     <div className="loginContainer">
-        <div className="login">
-          <div className="inputfield">
-            <label htmlFor="">Email</label>
-            <input
-              value={user.name}
-              type="email"
-              name="email"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="inputfield">
-            <label htmlFor="">Password</label>
-            <input
-              value={user.password}
-              type="password"
-              name="password"
-              onChange={handleChange}
-            />
-          </div>
-          <div className="loginBtn">
-            <button onClick={logIn}>Login</button>
-            <button onClick={()=>navigate('/signup')}>Create Account</button>
-          </div>
-          {user.error && <p>Something went wrong</p>}
+      <div className="login">
+        <div className="inputfield">
+          <label htmlFor="">Email</label>
+          <input
+            value={user.name}
+            type="email"
+            name="email"
+            onChange={handleChange}
+          />
         </div>
+        <div className="inputfield">
+          <label htmlFor="">Password</label>
+          <input
+            value={user.password}
+            type="password"
+            name="password"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="loginBtn">
+          <button onClick={logIn}>Login</button>
+          <button onClick={() => navigate("/signup")}>Create Account</button>
+        </div>
+        {status.status.msg && <p>{status.status.msg}</p>}
+      </div>
     </div>
   );
 }
