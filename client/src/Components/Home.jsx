@@ -24,6 +24,7 @@ function Home() {
       <h3>You are {status.status.login?'':'not'} logged in</h3>
       <h2>Your name is {cookie.name}</h2>
       <h2>Your email is {cookie.email}</h2>
+      <h3>Your metamask id is {cookie.metaid}</h3>
       <button onClick={()=>{
         setCookie('login')
         status.setStatus({...status.status, login:false})

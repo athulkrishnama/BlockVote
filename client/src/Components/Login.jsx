@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
 import { useCookies } from "react-cookie";
@@ -42,7 +42,8 @@ function Login() {
           setCookie("login", 1);
           setCookie("name", userData.name);
           setCookie("email", userData.email);
-          status.setStatus({ ...status.status, login: true });
+          setCookie("metaid", userData.metaid)
+          status.setStatus({ msg:'', login: true });
         })
         // if login failed set msg to status context
         .catch((e) => {
@@ -50,6 +51,8 @@ function Login() {
         });
     }
   };
+
+  
   return (
     <div className="loginContainer">
       <div className="login">

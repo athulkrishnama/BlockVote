@@ -13,7 +13,7 @@ function SignUp() {
   const loginStatus = useContext(AppContext);
 
   // usestate to store data of input fileds
-  const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const [user, setUser] = useState({ name: "", email: "", password: "" ,metaid:""});
 
   // cookie to save user details
   const [cookie, setCookie] = useCookies(["user"]);
@@ -28,7 +28,7 @@ function SignUp() {
   // signup function to post data to backend
   const SignUp = () => {
     // check wheather inputs are empty
-    if (user.name == "" || user.email == "" || user.password == "") {
+    if (user.name == "" || user.email == "" || user.password == "" || user.metaid=="") {
       loginStatus.setStatus({
         ...loginStatus.status,
         msg: "field should not be empty",
@@ -39,9 +39,13 @@ function SignUp() {
         setCookie("login", 1);
         setCookie("name", user.name);
         setCookie("email", user.email);
-        loginStatus.setStatus({ ...loginStatus.status, login: true });
-      });
+        setCookie("metaid", user.metaid)
+        loginStatus.setStatus({ msg:'', login: true });
+      }).catch((e)=>{
+        loginStatus.setStatus({...loginStatus.status, msg:e.response.data.message})
+      })
     }
+
   };
   return (
     <div>
@@ -75,6 +79,16 @@ function SignUp() {
               value={user.password}
               type="password"
               name="password"
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="inputfield">
+            <label htmlFor="">MetaMask ID</label>
+            <input
+              value={user.metaid}
+              type="text"
+              name="metaid"
               onChange={handleChange}
               required
             />

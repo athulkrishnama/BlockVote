@@ -10,7 +10,7 @@ body{
 .login{
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(35px);
     width: 30vw;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@ body{
     font-size: 2rem;
     background-color: transparent;
     border: 3px solid transparent;
-    padding: 0.3rem;
+    padding: 0.5rem;
     margin: 1rem;
     color: white;
     border-radius: 0.4rem;
