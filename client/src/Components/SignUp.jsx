@@ -3,16 +3,20 @@ import { AppContext } from "../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
+import { useCookies } from "react-cookie";
 
 function SignUp() {
   const navigate = useNavigate();
 
-  // loginstatus context to save login details 
+  // loginstatus context to save login details
   // {login:true, msg:''}
   const loginStatus = useContext(AppContext);
 
   // usestate to store data of input fileds
   const [user, setUser] = useState({ name: "", email: "", password: "" });
+
+  // cookie to save user details
+  const [cookie, setCookie] = useCookies(["user"]);
 
   // handle funtion to update data in usestate on change of the data in input field
   // [name]: value update the key value pair
@@ -31,7 +35,11 @@ function SignUp() {
       });
     } else {
       axios.post("signup", user).then(() => {
-        navigate("/login");
+        navigate("/");
+        setCookie("login", 1);
+        setCookie("name", user.name);
+        setCookie("email", user.email);
+        loginStatus.setStatus({ ...loginStatus.status, login: true });
       });
     }
   };
@@ -47,6 +55,7 @@ function SignUp() {
               name="email"
               onChange={handleChange}
               required
+              autoComplete="off"
             />
           </div>
           <div className="inputfield">
@@ -57,6 +66,7 @@ function SignUp() {
               name="name"
               onChange={handleChange}
               required
+              autoComplete="off"
             />
           </div>
           <div className="inputfield">

@@ -3,6 +3,7 @@ import { AppContext } from "../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
+import { useCookies } from "react-cookie";
 
 function Login() {
   //context of loginstatus {login, msg}
@@ -11,6 +12,11 @@ function Login() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({ email: "", password: "" });
+
+  // cookie to store details of logined user
+  const [cookie, setCookie] = useCookies(['user'])
+
+  
 
   //function to handle change data in the input field 
   // data is updated in the user usestate
@@ -31,7 +37,12 @@ function Login() {
         .post("/login", user)
         .then((data) => {
           status.setStatus({ ...status.status, login: true });
+          const userData = data.data.user;
           navigate("/");
+          setCookie("login", 1);
+          setCookie("name", userData.name);
+          setCookie("email", userData.email);
+          status.setStatus({ ...status.status, login: true });
         })
         // if login failed set msg to status context
         .catch((e) => {
@@ -49,6 +60,7 @@ function Login() {
             type="email"
             name="email"
             onChange={handleChange}
+            autoComplete="off"
           />
         </div>
         <div className="inputfield">
