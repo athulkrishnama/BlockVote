@@ -81,6 +81,118 @@ body{
 
 .home nav{
     background-color:#19A3EA ;
-    height: 7vh;
     color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    font-size: 2rem;
+}
+
+.home nav button{
+    color: white;
+    background-color:#19A3EA ;
+    border:1px solid white;
+    font-size: 1.5rem;
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+}
+.home nav button:hover{
+    color: #19A3EA;
+    background-color: white;
+    transition-duration: 300ms;
+}
+
+.homeBody{
+    text-align: center;
+    margin: 2rem;
+}
+
+.homeBody table{
+    margin: auto;
+    border: 1px solid #19A3EA;
+    padding: 3rem;
+    border-radius: 2rem;
+    font-size: 3rem;
+    text-align: left;
+}
+
+td,th{
+    padding: 1rem
+}
+td{
+    padding-left: 3rem;
+}
+
+.admin{
+    width: 100vw;
+    height: 100vh;
+}
+
+.admin nav{
+    background-color: purple;
+    padding: 2rem 1rem;
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin nav button{
+    background-color: transparent;
+    outline: white;
+    border: 1px solid white;
+    color: white;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.adminBody{
+    display: flex;
+    padding: 2rem;
+}
+.voters{
+    padding: 2rem;
+    border: 1px solid purple;
+    border-radius: 2rem;
+    color: purple;
+}
+
+.voters li{
+    background-color: purple;
+    list-style-type: none;
+    color: white;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 5px 5px 15px rgba(62, 37, 87, 0.694) ;
+    display: flex;
+    justify-content: space-between;
+}
+
+.voters li button{
+    border: 1.5px solid white;
+    padding : 0.3rem;
+    background-color: purple;
+    color: white;
+    margin-left: 0.7rem;
+    border-radius: 0.3rem;
+}
+
+.voters li button:hover{
+    color: purple;
+    background-color: white;
+    border-color: violet;
+    transition-duration: 500ms;
+}
+.election{
+    padding: 1rem;
+    border: 1px solid purple;
+    border-radius: 2rem;
+    flex-basis:60vw ;
+}
+
+.half{
+    flex-grow: 1;
+    margin: 1rem;
 }

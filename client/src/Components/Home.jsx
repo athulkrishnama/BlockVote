@@ -21,16 +21,31 @@ function Home(props) {
   return (
     <div className="home">
       <nav>
-        <h1>Election Name come here</h1>
-        <button onClick={()=>{
-        setCookie('login')
-        status.setStatus({...status.status, login:false})
-        navigate('/login')
-      }}>Logout</button>
+        <h1>Election Name </h1>
+        <div>
+          <button onClick={()=>{
+          setCookie('login')
+          status.setStatus({...status.status, login:false})
+          navigate('/login')
+                }}>Logout</button>
+        </div>
       </nav>
-      <h2>Your name is {cookie.name}</h2>
-      <h2>Your email is {cookie.email}</h2>
-      <h3>Your metamask id is {cookie.metaid}</h3>
+      <div className="homeBody">
+        <table>
+          <tr>
+            <th>Name</th>
+            <td>{cookie.name}</td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td>{cookie.email}</td>
+          </tr>
+          <tr>
+            <th>Metamask ID</th>
+            <td>{cookie.metaid}</td>
+          </tr>
+        </table>
+      </div>
       
       
     </div>
