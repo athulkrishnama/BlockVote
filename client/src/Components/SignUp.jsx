@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -47,6 +47,10 @@ function SignUp() {
     }
 
   };
+  useEffect(() => {
+    loginStatus.setStatus({...loginStatus.status, msg:''})
+  }, [])
+  
   return (
     <div>
       <div className="loginContainer">

@@ -44,12 +44,43 @@ app.post('/signup', (req, res) => {
       })
     }
   })
-
-  // come to catch block if not found
-
+})
 
 
+app.get('/admin',(req,res)=>{
+  get().collection('admin').findOne().then((data)=>{
+    if(!data)
+      res.status(200).send({registerd:false})
+    else  
+      res.status(200).send({registerd:true})
+  })
 
+})
+
+
+app.post('/adminregister',(req, res)=>{
+  get().collection('admin').findOne().then((data)=>{
+    if(!data){
+      get().collection('admin').insertOne(req.body).then(()=>{
+        res.status(200).send()
+      })
+    }
+    else{
+      res.status(400).send({registerd:true})
+    }
+  })
+})
+
+
+app.post('/adminlogin', (req, res)=>{
+  get().collection('admin').findOne(req.body).then((data)=>{
+    if(data){
+      res.status(200).send(data)
+    }
+    else{
+      res.status(404)
+    }
+  })
 })
 
 

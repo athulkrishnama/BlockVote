@@ -8,6 +8,7 @@ import { AppContext } from "./context";
 import { CookiesProvider, Cookies, useCookies } from "react-cookie";
 import { connectWeb3Metamask } from "./web3_functions";
 import detectEthereumProvider from "@metamask/detect-provider";
+import Admin from "./Components/Admin";
 function App() {
   // cookies for user details
   const [cookie, setCookie] = useCookies();
@@ -57,9 +58,10 @@ function App() {
         <AppContext.Provider value={{ status, setStatus }}>
         <CookiesProvider>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home contractInstance={contractInstance} account={accounts[0]}/>} />
             <Route path="/login" element={<Login contractInstance={contractInstance} account={accounts[0]}/>} />
             <Route path="/signup" element={<SignUp contractInstance={contractInstance} account={accounts[0]}/>} />
+            <Route path="/admin" element={<Admin contractInstance={contractInstance} account={accounts[0]}/>}/>
           </Routes>
         </CookiesProvider>
       </AppContext.Provider>}

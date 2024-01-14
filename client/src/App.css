@@ -69,3 +69,18 @@ body{
     border-bottom: 3px solid white;
     border-radius: 0;
 }
+
+
+/* Home Screen  */
+
+.home{
+    width: 100vw;
+    height: 100vh;
+    
+}
+
+.home nav{
+    background-color:#19A3EA ;
+    height: 7vh;
+    color: white;
+}
