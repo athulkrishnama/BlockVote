@@ -5,6 +5,7 @@ function RegistedVoters({ approveVoter, instance, account }) {
   const [voters, setVoters] = useState([]);
 
   const approve = async (votersAddress) => {
+    console.log(votersAddress)
     let result = await approveVoter(instance, account, votersAddress);
     console.log("result:", result);
     if (!result.error) {

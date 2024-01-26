@@ -55,6 +55,7 @@ app.get('/admin',(req,res)=>{
       res.status(200).send({registerd:true})
   })
 
+
 })
 
 
@@ -64,6 +65,8 @@ app.post('/adminregister',(req, res)=>{
       get().collection('admin').insertOne(req.body).then(()=>{
         res.status(200).send()
       })
+
+      get().collection('election').insertOne({election:req.body.election}).then()
     }
     else{
       res.status(400).send({registerd:true})

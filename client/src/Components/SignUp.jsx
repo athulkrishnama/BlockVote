@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../axios";
 import { useCookies } from "react-cookie";
 
-function SignUp() {
+ function SignUp({account}) {
   const navigate = useNavigate();
 
   // loginstatus context to save login details
@@ -13,7 +13,12 @@ function SignUp() {
   const loginStatus = useContext(AppContext);
 
   // usestate to store data of input fileds
-  const [user, setUser] = useState({ name: "", email: "", password: "" ,metaid:""});
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    metaid: account
+  });
 
   // cookie to save user details
   const [cookie, setCookie] = useCookies(["user"]);
@@ -28,29 +33,46 @@ function SignUp() {
   // signup function to post data to backend
   const SignUp = () => {
     // check wheather inputs are empty
-    if (user.name == "" || user.email == "" || user.password == "" || user.metaid=="") {
+    if (
+      user.name == "" ||
+      user.email == "" ||
+      user.password == "" ||
+      user.metaid == ""
+    ) {
       loginStatus.setStatus({
         ...loginStatus.status,
         msg: "field should not be empty",
       });
     } else {
-      axios.post("signup", user).then(() => {
-        navigate("/");
-        setCookie("login", 1);
-        setCookie("name", user.name);
-        setCookie("email", user.email);
-        setCookie("metaid", user.metaid)
-        loginStatus.setStatus({ msg:'', login: true });
-      }).catch((e)=>{
-        loginStatus.setStatus({...loginStatus.status, msg:e.response.data.message})
-      })
+      axios
+        .post("signup", user)
+        .then(() => {
+          navigate("/");
+          setCookie("login", 1);
+          setCookie("name", user.name);
+          setCookie("email", user.email);
+          setCookie("metaid", user.metaid);
+          loginStatus.setStatus({ msg: "", login: true });
+        })
+        .catch((e) => {
+          loginStatus.setStatus({
+            ...loginStatus.status,
+            msg: e.response.data.message,
+          });
+        });
     }
-
+  };
+  const handleAccountChanged = (accounts) => {
+    handleChange({ target: { name: "metaid", value: accounts[0] } });
   };
   useEffect(() => {
-    loginStatus.setStatus({...loginStatus.status, msg:''})
-  }, [])
-  
+    loginStatus.setStatus({ ...loginStatus.status, msg: "" });
+    window.ethereum.on("accountsChanged", handleAccountChanged);
+    return () => {
+      window.ethereum.off("accountsChanged", handleAccountChanged);
+    };
+  }, [user]);
+
   return (
     <div>
       <div className="loginContainer">
@@ -95,6 +117,7 @@ function SignUp() {
               name="metaid"
               onChange={handleChange}
               required
+              disabled
             />
           </div>
           <div className="loginBtn">
