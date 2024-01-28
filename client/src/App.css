@@ -192,6 +192,18 @@ td{
     flex-basis:60vw ;
 }
 
+.election .input,input,button{
+    font-size: 2rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+
+}
+
+.election button{
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
 .half{
     flex-grow: 1;
     margin: 1rem;

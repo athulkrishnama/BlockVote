@@ -4,6 +4,7 @@ import AdminRegister from "./AdminRegister";
 import AdminLogin from "./AdminLogin";
 import RegistedVoters from "./RegistedVoters";
 import {registerCandidates, whiteListAddress, getAllCandidate, getWinner, startVoting, stopVoting} from '../web3_functions'
+import Candidates from "./Candidates";
 function Admin(props) {
   const [registerd, setRegistered] = useState(false);
   const [login, setLogin] = useState(false);
@@ -20,9 +21,7 @@ function Admin(props) {
             <div><button onClick={() => setLogin(false)}>Log Out</button></div>
           </nav>
           <div className="adminBody">
-            <div className="election half">
-              Election functions and candidates addition
-            </div>
+            <Candidates funs={{registerCandidates,startVoting,stopVoting,getAllCandidate}} instance={props.contractInstance} account={props.account}/>
             <RegistedVoters approveVoter={whiteListAddress} instance={props.contractInstance} account={props.account}/>
           </div>
         </div>
