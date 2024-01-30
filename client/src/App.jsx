@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./App.css";
 import Login from "./Components/Login";
 import { Routes, Route } from "react-router-dom";
@@ -49,7 +51,7 @@ function App() {
 
   return (
     //setting context to save login details
-    <div>
+    <div className='container-fluid'>
       {
         contractInstance == null ?
         <div>
@@ -58,10 +60,10 @@ function App() {
         <AppContext.Provider value={{ status, setStatus }}>
         <CookiesProvider>
           <Routes>
-            <Route path="/" element={<Home contractInstance={contractInstance} account={accounts[0]}/>} />
-            <Route path="/login" element={<Login contractInstance={contractInstance} account={accounts[0]}/>} />
-            <Route path="/signup" element={<SignUp contractInstance={contractInstance} account={accounts[0]}/>} />
-            <Route path="/admin" element={<Admin contractInstance={contractInstance} account={accounts[0]}/>}/>
+            <Route path="/" element={<Home contractInstance={contractInstance} account={accounts[0].toLowerCase()}/>} />
+            <Route path="/login" element={<Login contractInstance={contractInstance} account={accounts[0].toLowerCase()}/>} />
+            <Route path="/signup" element={<SignUp contractInstance={contractInstance} account={accounts[0].toLowerCase()}/>} />
+            <Route path="/admin" element={<Admin contractInstance={contractInstance} account={accounts[0].toLowerCase()}/>}/>
           </Routes>
         </CookiesProvider>
       </AppContext.Provider>}

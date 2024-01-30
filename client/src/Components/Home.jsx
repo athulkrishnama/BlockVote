@@ -21,7 +21,7 @@ function Home(props) {
   useEffect(() => {
     // check user is signed in or not
     !status.status.login?navigate('/login'):null
-    web3.eth.getAccounts().then((data)=>setAccount(data[0]))
+    web3.eth.getAccounts().then((data)=>setAccount(data[0].toLowerCase()))
     
     //change account when account changed in metamask wallet
     if(web3){
@@ -49,7 +49,7 @@ function Home(props) {
         <table>
           <tbody>
             <tr>
-              <th>Name</th>
+              <th >Name</th>
               <td>{cookie.name}</td>
             </tr>
             <tr>

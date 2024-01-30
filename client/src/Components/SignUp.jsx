@@ -62,23 +62,29 @@ import { useCookies } from "react-cookie";
         });
     }
   };
+
+  // change metaid in form when metaid changed in metamask wallet
   const handleAccountChanged = (accounts) => {
     handleChange({ target: { name: "metaid", value: accounts[0] } });
   };
+
+
   useEffect(() => {
     loginStatus.setStatus({ ...loginStatus.status, msg: "" });
+
+    //listener for account change
     window.ethereum.on("accountsChanged", handleAccountChanged);
     return () => {
+    //remove lister on unmount
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
   }, [user]);
 
   return (
     <div>
-      <div className="loginContainer">
-        <div className="login">
-          <div className="inputfield">
-            <label htmlFor="">Email</label>
+      <div className="d-flex align-items-center justify-content-center full-page row">
+        <div className="login col-md-3">
+          <div className="mb-3 form-floating">
             <input
               value={user.email}
               type="email"
@@ -86,10 +92,12 @@ import { useCookies } from "react-cookie";
               onChange={handleChange}
               required
               autoComplete="off"
+              className="form-control"
+              placeholder="Email"
             />
+            <label htmlFor="" className="form-label" >Email</label>
           </div>
-          <div className="inputfield">
-            <label htmlFor="">UserName</label>
+          <div className="mb-3 form-floating">
             <input
               value={user.name}
               type="text"
@@ -97,20 +105,24 @@ import { useCookies } from "react-cookie";
               onChange={handleChange}
               required
               autoComplete="off"
+              className="form-control"
+              placeholder="Username"
             />
+            <label htmlFor="" className="form-label">UserName</label>
           </div>
-          <div className="inputfield">
-            <label htmlFor="">Password</label>
+          <div className="mb-3 form-floating">
             <input
               value={user.password}
               type="password"
               name="password"
               onChange={handleChange}
               required
+              className="form-control"
+              placeholder="Password"
             />
+            <label htmlFor="" className="form-label">Password</label>
           </div>
-          <div className="inputfield">
-            <label htmlFor="">MetaMask ID</label>
+          <div className="mb-3 form-floating">
             <input
               value={user.metaid}
               type="text"
@@ -118,15 +130,19 @@ import { useCookies } from "react-cookie";
               onChange={handleChange}
               required
               disabled
+              className="form-control"
+              placeholder="metaid"
             />
+            <p className="text-secondary mt-1">Changing metamask id on metamask wallet will reflect here</p>
+            <label htmlFor="" className="form-label">MetaMask ID</label>
           </div>
-          <div className="loginBtn">
-            <button onClick={SignUp}>Sign Up</button>
-            <button onClick={() => navigate("/login")}>
+          <div className="row">
+            <button className="btn btn-primary col-auto ms-3" onClick={SignUp}>Sign Up</button>
+            <button className="btn btn-outline-primary col-auto ms-auto me-3" onClick={() => navigate("/login")}>
               Already Have Account
             </button>
           </div>
-          <p>{loginStatus.status.msg}</p>
+          <p className="text-danger m-3">{loginStatus.status.msg}</p>
         </div>
       </div>
     </div>

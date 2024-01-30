@@ -6,11 +6,14 @@ import axios from "../axios";
 import { useCookies } from "react-cookie";
 
 function Login() {
+
   //context of loginstatus {login, msg}
   const status = useContext(AppContext);
 
+  //for navigation to create account
   const navigate = useNavigate();
 
+  //state for user 
   const [user, setUser] = useState({ email: "", password: "" });
 
   // cookie to store details of logined user
@@ -54,30 +57,34 @@ function Login() {
 
   
   return (
-    <div className="loginContainer">
-      <div className="login">
-        <div className="inputfield">
-          <label htmlFor="">Email</label>
+    <div className="d-flex align-items-center justify-content-center full-page row">
+      <div className="login col-md-3">
+        <div className="mb-3 form-floating">
           <input
             value={user.name}
             type="email"
             name="email"
             onChange={handleChange}
             autoComplete="off"
+            className="form-control"
+            placeholder="Email"
           />
+          <label htmlFor="" className="form-label">Email</label>
         </div>
-        <div className="inputfield">
-          <label htmlFor="">Password</label>
+        <div className="mb-3 form-floating">
           <input
             value={user.password}
             type="password"
             name="password"
             onChange={handleChange}
+            className="form-control"
+            placeholder="Password"         
           />
+          <label htmlFor="" className="form-label">Password</label>
         </div>
-        <div className="loginBtn">
-          <button onClick={logIn}>Login</button>
-          <button onClick={() => navigate("/signup")}>Create Account</button>
+        <div className="row">
+          <button className="col-auto btn btn-primary ms-3" onClick={logIn}>Login</button>
+          <button className="col-auto btn btn-outline-primary ms-auto me-3" onClick={() => navigate("/signup")}>Create Account</button>
         </div>
         {status.status.msg && <p>{status.status.msg}</p>}
       </div>
