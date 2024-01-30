@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllCandidate, registerCandidates } from "../web3_functions";
 
-function Candidates({ funs , instance, account}) {
+function Candidates({  instance, account}) {
 
     const [candidate , setCandidate] = useState({name:'' , metaid:''})
 
@@ -16,15 +16,6 @@ function Candidates({ funs , instance, account}) {
         let result = await registerCandidates(instance, account, candidate.name, 12, candidate.metaid);
         console.log("result:", result);
     }
-    useEffect(() => {
-      
-        const connect = async()=>{
-            const arr = await getAllCandidate(instance, account)
-            console.log(arr.message)
-        }
-    
-        connect()
-    }, )
     
     return (
     <div className="col-md-6 border rounded-4 p-4 m-4">

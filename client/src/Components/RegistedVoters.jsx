@@ -19,7 +19,7 @@ function RegistedVoters({ approveVoter, instance, account }) {
     axios.get("/voters").then((data) => {
       setVoters(data.data.voters);
     });
-  }, [voters]);
+  }, []);
 
   return (
     <div className="col-md-4 border rounded-4 m-4">

@@ -5,9 +5,14 @@ import AdminLogin from "./AdminLogin";
 import RegistedVoters from "./RegistedVoters";
 import {registerCandidates, whiteListAddress, getAllCandidate, getWinner, startVoting, stopVoting} from '../web3_functions'
 import Candidates from "./Candidates";
+import Election from "./Election";
+import ListCandidates from "./ListCandidates";
 function Admin(props) {
+  // state to registered or logined
+  // if one admin account exists user cant create another admin account 
   const [registerd, setRegistered] = useState(false);
   const [login, setLogin] = useState(false);
+  //query to database if admin exixts
   axios.get("/admin").then((data) => {
     setRegistered(data.data.registerd);
   });
@@ -21,8 +26,10 @@ function Admin(props) {
             <button className="btn btn-secondary" onClick={() => setLogin(false)}>Log Out</button>
           </nav>
           <div className="row">
-            <Candidates funs={{registerCandidates,startVoting,stopVoting,getAllCandidate}} instance={props.contractInstance} account={props.account}/>
+            <Candidates  instance={props.contractInstance} account={props.account}/>
             <RegistedVoters approveVoter={whiteListAddress} instance={props.contractInstance} account={props.account}/>
+            <Election instance={props.contractInstance} account={props.account}/>
+            <ListCandidates instance={props.contractInstance} account={props.account}/>
           </div>
         </div>
       ) : !registerd ? (
