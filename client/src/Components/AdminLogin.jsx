@@ -19,30 +19,34 @@ function AdminLogin(props) {
         }
       }
   return (
-    <div className="loginContainer">
-    <div className="login">
-      <h2>Admin Login</h2>
-      <div className="inputfield">
-        <label htmlFor="">Email</label>
+    <div className="d-flex align-items-center justify-content-center full-page row container-fluid">
+    <div className="col-4">
+      <h2 className='fs-1 fw-bold'>Admin Login</h2>
+      <div className="mb-3 form-floating">
         <input
           value={user.name}
           type="email"
           name="email"
           onChange={handleChange}
           autoComplete="off"
+          className='form-control'
+          placeholder='Email'
         />
+        <label htmlFor="" className='form-label'>Email</label>
       </div>
-      <div className="inputfield">
-        <label htmlFor="">Password</label>
+      <div className="mb-3 form-floating">
         <input
           value={user.password}
           type="password"
           name="password"
           onChange={handleChange}
+          className='form-control'
+          placeholder='Password'
         />
+        <label htmlFor="" className='form-label'>Password</label>
       </div>
       <div className="loginBtn">
-        <button onClick={logIn}>Login</button>
+        <button className='btn btn-primary' onClick={logIn}>Login</button>
       </div>
     </div>
   </div>

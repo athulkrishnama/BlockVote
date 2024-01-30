@@ -34,19 +34,23 @@ function Home(props) {
   }, [account])
   
   return (
-    <div className="home">
-      <nav>
-        <h1>Election Name </h1>
-        <div>
-          <button onClick={()=>{
-          setCookie('login')
-          status.setStatus({...status.status, login:false})
-          navigate('/login')
-                }}>Logout</button>
+    <div className="d-flex flex-column container-fluid">
+      <nav className="navbar navbar-expanded-md bg-light">
+        <div className="container-fluid">
+          <h1 className="navbar-brand fs-1 fw-bold">Election Name </h1>
+          <div className="navbarNav">
+            <button
+            className="btn btn-primary "
+            onClick={()=>{
+            setCookie('login')
+            status.setStatus({...status.status, login:false})
+            navigate('/login')
+                  }}>Logout</button>
+          </div>
         </div>
       </nav>
-      <div className="homeBody">
-        <table>
+      <div className="">
+        <table className="col-3">
           <tbody>
             <tr>
               <th >Name</th>
@@ -62,8 +66,9 @@ function Home(props) {
             </tr>
           </tbody>
         </table>
+          <p className="text-danger" >{account!=cookie.metaid?"Your registered Id doesnt match with current account":null}</p>
 
-        <p>{account!=cookie.metaid?"Your registered Id doesnt match with current account":null}</p>
+       
       </div>
       
       

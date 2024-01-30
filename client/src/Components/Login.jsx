@@ -57,8 +57,8 @@ function Login() {
 
   
   return (
-    <div className="d-flex align-items-center justify-content-center full-page row">
-      <div className="login col-md-3">
+    <div className="d-flex align-items-center justify-content-center full-page row container-fluid">
+      <div className="login col-md-3 shadow-lg rounded-3 p-3 pt-4">
         <div className="mb-3 form-floating">
           <input
             value={user.name}
@@ -86,7 +86,7 @@ function Login() {
           <button className="col-auto btn btn-primary ms-3" onClick={logIn}>Login</button>
           <button className="col-auto btn btn-outline-primary ms-auto me-3" onClick={() => navigate("/signup")}>Create Account</button>
         </div>
-        {status.status.msg && <p>{status.status.msg}</p>}
+        {status.status.msg && <p className="text-danger mt-3">{status.status.msg}</p>}
       </div>
     </div>
   );

@@ -22,19 +22,19 @@ function RegistedVoters({ approveVoter, instance, account }) {
   }, [voters]);
 
   return (
-    <div className="voters half">
-      <h1>Pending Voters to Approve</h1>
-      <ul>
+    <div className="col-md-4 border rounded-4 m-4">
+      <h1 className="fs-2 fw-medium">Pending Voters to Approve</h1>
+      <ul className="list-group">
         {voters.map((obj) => {
           return (
-            <li key={obj._id}>
+            <li key={obj._id} className="list-group-item d-flex justify-content-between align-items-center">
               <div>
                 <p>Name: {obj.name}</p>
                 <p>Email: {obj.email}</p>
               </div>
-              <div>
-                <button onClick={() => approve(obj.metaid)}>Approve</button>
-                <button>Reject</button>
+              <div className="">
+                <button className="btn btn-primary me-2" onClick={() => approve(obj.metaid)}>Approve</button>
+                <button className="btn btn-danger">Reject</button>
               </div>
             </li>
           );

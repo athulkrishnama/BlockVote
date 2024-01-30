@@ -15,20 +15,20 @@ function Admin(props) {
   return (
     <div>
       {login ? (
-        <div className="admin">
-          <nav>
-            <h1>Admin Panel</h1>
-            <div><button onClick={() => setLogin(false)}>Log Out</button></div>
+        <div className="d-flex flex-column container-fluid">
+          <nav className="navbar navbar-expanded-md bg-light">
+            <h1 className="navbar-brand fs-1 fw-bold">Admin Panel</h1>
+            <button className="btn btn-secondary" onClick={() => setLogin(false)}>Log Out</button>
           </nav>
-          <div className="adminBody">
+          <div className="row">
             <Candidates funs={{registerCandidates,startVoting,stopVoting,getAllCandidate}} instance={props.contractInstance} account={props.account}/>
             <RegistedVoters approveVoter={whiteListAddress} instance={props.contractInstance} account={props.account}/>
           </div>
         </div>
       ) : !registerd ? (
-        <AdminRegister setLogin={setLogin} />
+        <AdminRegister setLogin={setLogin} account={props.account}/>
       ) : (
-        <AdminLogin setLogin={setLogin} />
+        <AdminLogin setLogin={setLogin} account={props.account}/>
       )}
     </div>
   );

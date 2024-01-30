@@ -27,16 +27,17 @@ function Candidates({ funs , instance, account}) {
     }, )
     
     return (
-    <div className="election half">
-      <div className="input">
-        <label htmlFor="">Candidate Name</label>
-        <input type="text" value={candidate.name} onChange={handleChange} name="name"/>
+    <div className="col-md-6 border rounded-4 p-4 m-4">
+      <h2 className="fs-3 fw-medium">Candidate Registration</h2>
+      <div className="mb-3 form-floating">
+        <input className="form-control" type="text" value={candidate.name} onChange={handleChange} name="name" placeholder="Candidate Name"/>
+        <label className="form-label" htmlFor="">Candidate Name</label>
       </div>
-      <div className="input">
-        <label htmlFor="" >Candidate Metamask ID</label>
-        <input type="text" value={candidate.metaid} onChange={handleChange} name="metaid"/>
+      <div className="mb-3 form-floating">
+        <input className="form-control" type="text" value={candidate.metaid} onChange={handleChange} name="metaid" placeholder="metaid"/>
+        <label className="form-label" htmlFor="" >Candidate Metamask ID</label>
       </div>
-      <button onClick={registerCandidate}>Register</button>
+      <button className="btn btn-primary" onClick={registerCandidate}>Register</button>
     </div>
   );
 }

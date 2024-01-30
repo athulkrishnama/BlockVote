@@ -82,8 +82,8 @@ import { useCookies } from "react-cookie";
 
   return (
     <div>
-      <div className="d-flex align-items-center justify-content-center full-page row">
-        <div className="login col-md-3">
+      <div className="d-flex align-items-center justify-content-center full-page row container-fluid">
+        <div className="login col-md-3 shadow-lg rounded-3 p-3 pt-4">
           <div className="mb-3 form-floating">
             <input
               value={user.email}

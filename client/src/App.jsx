@@ -51,7 +51,7 @@ function App() {
 
   return (
     //setting context to save login details
-    <div className='container-fluid'>
+    <div className=''>
       {
         contractInstance == null ?
         <div>
