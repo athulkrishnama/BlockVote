@@ -3,6 +3,7 @@ import { AppContext } from "../context";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
+import CandidatesDisplay from "./CandidatesDisplay";
 const web3 = new Web3(window.ethereum);
 function Home(props) {
   const status = useContext(AppContext);
@@ -70,7 +71,7 @@ function Home(props) {
 
        
       </div>
-      
+      <CandidatesDisplay instance={props.contractInstance} account={props.account}/>
       
     </div>
   );
