@@ -88,7 +88,7 @@ app.post('/adminlogin', (req, res)=>{
 
 
 app.get('/voters', (req, res)=>{
-  get().collection('voters').find({approve:{$exists:false}}).toArray().then((data)=>{
+  get().collection('voters').find({$and:[{approve:{$exists:false}}, {rejected:{$exists:false}}]}).toArray().then((data)=>{
     res.status(200).send({voters:data})
   })  
 })
@@ -96,6 +96,14 @@ app.get('/voters', (req, res)=>{
 app.post('/approve', (req, res)=>{
   const {metaid} = req.body
   get().collection('voters').updateOne({metaid:metaid},{$set:{approve:true}}).then((data)=>{
+    console.log(data)
+    res.status(200)
+  })
+})
+
+app.post('/reject', (req, res)=>{
+  const {metaid} = req.body
+  get().collection('voters').updateOne({metaid:metaid},{$set:{rejected:true}}).then((data)=>{
     console.log(data)
     res.status(200)
   })

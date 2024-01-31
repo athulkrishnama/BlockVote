@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getAllCandidate } from "../web3_functions";
+import { getAllCandidate , putVote} from "../web3_functions";
 
-function CandidatesDisplay({ instance, account }) {
+function CandidatesDisplay({ instance, account, electionStatus }) {
   // state for candidates
   const [candidates, setCandidates] = useState([]);
 
@@ -11,6 +11,11 @@ function CandidatesDisplay({ instance, account }) {
     console.log(res);
     setCandidates(res.message);
   };
+
+  const vote = async (address)=>{
+    const res = await putVote(instance, account, address)
+    console.log(res)
+  }
 
   useEffect(() => {
     getCandidates();
@@ -25,7 +30,7 @@ function CandidatesDisplay({ instance, account }) {
             <h3 className="card-title">{can.name}</h3>
             <div className="car-body">
               <p className="card-text">{can.candidateAddress}</p>
-              <button className="btn btn-primary m-2">Vote</button>
+              <button onClick={()=>{vote(can.candidateAddress)}} className="btn btn-primary m-2" disabled={!electionStatus && 'disabled' }>Vote</button>
             </div>
           </div>
         );

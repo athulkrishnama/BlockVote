@@ -15,10 +15,19 @@ function RegistedVoters({ approveVoter, instance, account }) {
     }
   };
 
+  const reject = async (votersAddress) => {
+
+      axios.post("/reject", { metaid: votersAddress }).then(() => {
+        setVoters([]);
+
+    })
+  };
+
   useEffect(() => {
     axios.get("/voters").then((data) => {
       setVoters(data.data.voters);
     });
+    console.log('refresh')
   }, []);
 
   return (
@@ -33,8 +42,8 @@ function RegistedVoters({ approveVoter, instance, account }) {
                 <p>Email: {obj.email}</p>
               </div>
               <div className="">
-                <button className="btn btn-primary me-2" onClick={() => approve(obj.metaid)}>Approve</button>
-                <button className="btn btn-danger">Reject</button>
+                <button className="btn btn-primary me-2" onClick={() => {approve(obj.metaid)}}>Approve</button>
+                <button className="btn btn-danger" onClick={()=>{reject(obj.metaid) }}>Reject</button>
               </div>
             </li>
           );
