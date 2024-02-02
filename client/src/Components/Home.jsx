@@ -51,7 +51,7 @@ function Home(props) {
     <div className="d-flex flex-column container-fluid">
       <nav className="navbar navbar-expanded-md bg-light">
         <div className="container-fluid">
-          <h1 className="navbar-brand fs-1 fw-bold">Election Name </h1>
+          <h1 className="navbar-brand fs-1 fw-bold">{cookie.election}</h1>
           {electionStatus?<h4 className="text-success">Election Started</h4>:<h4 className="text-danger">Election not yet started</h4>}
           <div className="navbarNav">
             <button

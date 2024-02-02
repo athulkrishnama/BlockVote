@@ -46,6 +46,7 @@ function Login() {
           setCookie("name", userData.name);
           setCookie("email", userData.email);
           setCookie("metaid", userData.metaid)
+          setCookie("election", userData.election)
           status.setStatus({ msg:'', login: true });
         })
         // if login failed set msg to status context
