@@ -100,7 +100,7 @@ app.post('/approve', (req, res)=>{
   const {metaid} = req.body
   get().collection('voters').updateOne({metaid:metaid},{$set:{approve:true}}).then((data)=>{
     console.log(data)
-    res.status(200)
+    res.status(200).send()
   })
 })
 
@@ -108,7 +108,7 @@ app.post('/reject', (req, res)=>{
   const {metaid} = req.body
   get().collection('voters').updateOne({metaid:metaid},{$set:{rejected:true}}).then((data)=>{
     console.log(data)
-    res.status(200)
+    res.status(200).send()
   })
 })
 

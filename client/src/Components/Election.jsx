@@ -1,17 +1,17 @@
 import React from "react";
 import { startVoting, stopVoting, getWinner } from "../web3_functions";
 import { useState } from "react";
-function Election({ instance, account }) {
+function Election({ instance, account, setElectionStatus }) {
   
     const [winner, setWinner] = useState('')
   
     const startVotingFun = async () => {
     const res = await startVoting(instance, account);
-    console.log(res);
+    if(!res.error)setElectionStatus(true)
   };
   const stopVotingFun = async () => {
     const res = await stopVoting(instance, account);
-    console.log(res);
+    if(!res.error)setElectionStatus(false)
   };
   const getWinnerFun = async () => {
     const res = await getWinner(instance, account);
