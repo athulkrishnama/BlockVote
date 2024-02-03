@@ -3,14 +3,14 @@
 pragma solidity ^0.8.13;
 
 contract Voting {
-
     address public owner;
     address public winnerAddress;
     string public eventName;
     uint public totalVote;
     bool votingStarted;
-
-    struct Candidate{
+    uint public totalVoters;
+    uint public totalRegisteredVoters;
+    struct Candidate {
         string name;
         uint age;
         bool registered;
@@ -18,27 +18,36 @@ contract Voting {
         uint votes;
     }
 
-    struct Voter{
+    struct Voter {
         bool registered;
         bool voted;
     }
 
     event success(string msg);
-    mapping(address=>uint) public candidates;
+    mapping(address => uint) public candidates;
     Candidate[] public candidateList;
-    mapping(address=>Voter) public voterList;
+    mapping(address => Voter) public voterList;
 
-    constructor(string memory _eventName){
+    constructor(string memory _eventName) {
         owner = msg.sender;
         eventName = _eventName;
         totalVote = 0;
-        votingStarted=false;
+        totalRegisteredVoters=0;
+        totalVoters=0;
+        votingStarted = false;
     }
 
-    function registerCandidates(string memory _name, uint _age, address _candidateAddress) external {
+    function registerCandidates(
+        string memory _name,
+        uint _age,
+        address _candidateAddress
+    ) external {
         require(msg.sender == owner, "Only owner can register Candidate!!");
         require(_candidateAddress != owner, "Owner can not participate!!");
-        require(candidates[_candidateAddress] == 0, "Candidate already registered");
+        require(
+            candidates[_candidateAddress] == 0,
+            "Candidate already registered"
+        );
         Candidate memory candidate = Candidate({
             name: _name,
             age: _age,
@@ -46,7 +55,8 @@ contract Voting {
             votes: 0,
             candidateAddress: _candidateAddress
         });
-        if(candidateList.length == 0){ //not pushing any candidate on location zero;
+        if (candidateList.length == 0) {
+            //not pushing any candidate on location zero;
             candidateList.push();
         }
         candidates[_candidateAddress] = candidateList.length;
@@ -56,13 +66,16 @@ contract Voting {
 
     function whiteListAddress(address _voterAddress) external {
         require(_voterAddress != owner, "Owner can not vote!!");
-        require(msg.sender == owner, "Only owner can whitelist the addresses!!");
-        require(voterList[_voterAddress].registered == false, "Voter already registered!!");
-        Voter memory voter = Voter({
-            registered: true,
-            voted: false
-        });
-
+        require(
+            msg.sender == owner,
+            "Only owner can whitelist the addresses!!"
+        );
+        require(
+            voterList[_voterAddress].registered == false,
+            "Voter already registered!!"
+        );
+        Voter memory voter = Voter({registered: true, voted: false});
+        totalRegisteredVoters++;
         voterList[_voterAddress] = voter;
         emit success("Voter registered!!");
     }
@@ -76,21 +89,27 @@ contract Voting {
     function putVote(address _candidateAddress) external {
         require(votingStarted == true, "Voting not started yet or ended!!");
         require(msg.sender != owner, "Owner can not vote!!");
-        require(voterList[msg.sender].registered == true, "Voter not registered!!");
+        require(
+            voterList[msg.sender].registered == true,
+            "Voter not registered!!"
+        );
         require(voterList[msg.sender].voted == false, "Already voted!!");
-        require(candidateList[candidates[_candidateAddress]].registered == true, "Candidate not registered");
+        require(
+            candidateList[candidates[_candidateAddress]].registered == true,
+            "Candidate not registered"
+        );
 
         candidateList[candidates[_candidateAddress]].votes++;
-        voterList[msg.sender].voted =true;
+        voterList[msg.sender].voted = true;
+        totalVoters++;
+        uint candidateVotes = candidateList[candidates[_candidateAddress]]
+            .votes;
 
-        uint candidateVotes = candidateList[candidates[_candidateAddress]].votes;
-
-        if(totalVote < candidateVotes){
+        if (totalVote < candidateVotes) {
             totalVote = candidateVotes;
             winnerAddress = _candidateAddress;
         }
         emit success("Voted !!");
-        
     }
 
     function stopVoting() external {
@@ -99,15 +118,23 @@ contract Voting {
         emit success("Voting stoped!!");
     }
 
-    function getAllCandidate() external view returns(Candidate[] memory list){
+    function getAllCandidate() external view returns (Candidate[] memory list) {
         return candidateList;
     }
 
-    function votingStatus() external view returns(bool){
+    function votingStatus() external view returns (bool) {
         return votingStarted;
     }
 
-    function getWinner() public view returns(Candidate memory candidate){
+    function getRegisteredVotersCount() external view returns (uint) {
+        return totalRegisteredVoters;
+    }
+
+    function getVotedCount() external view returns (uint) {
+        return totalVoters;
+    }
+
+    function getWinner() public view returns (Candidate memory candidate) {
         require(msg.sender == owner, "Only owner can declare winner!!");
         return candidateList[candidates[winnerAddress]];
     }

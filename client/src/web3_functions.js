@@ -235,8 +235,8 @@ async function stopVoting(contract, account) {
 async function votingStarted(contractInstance, account) {
     try {
         let res2 = await contractInstance.methods.votingStatus().call();
-        console.log("Res:",res2);
-        return {error: false, message: res2}
+        console.log("Res:", res2);
+        return { error: false, message: res2 }
     } catch (error) {
         console.log("Error:", error);
         return { error: true, message: error.message }
@@ -244,15 +244,37 @@ async function votingStarted(contractInstance, account) {
 
 }
 
+async function getRegisteredVotersCount(contractInstance, account) {
+    try {
+        let res2 = await contractInstance.methods.getRegisteredVotersCount().call();
+        console.log("Res:", res2);
+        return { error: false, message: res2 }
+    } catch (error) {
+        console.log("Error:", error);
+        return { error: true, message: error.message }
+    }
+}
+
+async function getVotedCount(contractInstance, account) {
+    try {
+        let res2 = await contractInstance.methods.getVotedCount().call();
+        console.log("Res:", res2);
+        return { error: false, message: res2 }
+    } catch (error) {
+        console.log("Error:", error);
+        return { error: true, message: error.message }
+    }
+}
+
 async function getWinner(contractInstance, account) {
     try {
-        console.log("contract:",contractInstance.methods);
+        console.log("contract:", contractInstance.methods);
         let winnerAddress = await contractInstance.methods.winnerAddress().call();
         let arrayPosition = await contractInstance.methods.candidates(winnerAddress).call();
         let winnerDetails = await contractInstance.methods.candidateList(arrayPosition).call();
         console.log("winnerAddress:", winnerAddress);
-        console.log("arrayPosition:",arrayPosition);
-        console.log("winnerDetails:",winnerDetails);
+        console.log("arrayPosition:", arrayPosition);
+        console.log("winnerDetails:", winnerDetails);
         return { error: false, message: { candidateAddress: winnerDetails.candidateAddress, age: winnerDetails.age, name: winnerDetails.name } }
     } catch (error) {
         console.log("Error:", error);
@@ -336,4 +358,7 @@ export {
     whiteListAddress,
     startVoting,
     stopVoting,
-    votingStarted,}
+    votingStarted,
+    getRegisteredVotersCount,
+    getVotedCount,
+}
