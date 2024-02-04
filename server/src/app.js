@@ -121,9 +121,15 @@ app.post('/getApprovalStatus', (req, res) => {
   let status = 'pending'
   try {
     get().collection('voters').findOne(req.body).then((data) => {
-      if (data.approve) status = 'approved'
-      if (data.rejected) status = 'rejected'
-      res.send(status)
+      try {
+        if (data.approve) status = 'approved'
+        if (data.rejected) status = 'rejected'
+        res.send(status)
+      }
+      catch{
+        console.log('error')
+        res.status(401).send()
+      }
     })
   }
   catch {
@@ -147,11 +153,11 @@ app.get('/getVoterStatistics', (req, res) => {
   try {
     Promise.all([
       get().collection('voters').countDocuments(),
-      get().collection('voters').countDocuments({approve:true}),
-      get().collection('voters').countDocuments({rejected:true})
+      get().collection('voters').countDocuments({ approve: true }),
+      get().collection('voters').countDocuments({ rejected: true })
     ]).then((result) => {
       console.log(result)
-       const statistics = { registered: result[0], approved: result[1], rejected: result[2] }
+      const statistics = { registered: result[0], approved: result[1], rejected: result[2] }
 
       res.send(statistics)
     })

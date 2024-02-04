@@ -56,6 +56,7 @@ const web3 = new Web3(window.ethereum);
   // !status.status.login ? navigate("/login") : null;
   useEffect(() => {
     // check user is signed in or not
+    !status.status.login ? navigate("/login") : null;
     web3.eth.getAccounts().then((data) => setAccount(data[0].toLowerCase()));
 
     //change account when account changed in metamask wallet

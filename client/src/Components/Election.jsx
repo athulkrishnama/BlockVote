@@ -15,7 +15,6 @@ function Election({ instance, account, setElectionStatus }) {
   };
   const getWinnerFun = async () => {
     const res = await getWinner(instance, account);
-    console.log(res);
     setWinner(res.message.name)
   };
   return (
