@@ -112,9 +112,17 @@ app.post('/reject', (req, res) => {
 
 app.get('/getElectionDetails', (req, res) => {
   get().collection('election').findOne().then((data) => {
-    console.log(data)
     res.send(data)
 
+  })
+})
+
+app.post('/getApprovalStatus', (req, res)=>{
+  let status = 'pending'
+  get().collection('voters').findOne(req.body).then((data)=>{
+    if(data.approve)status='approved'
+    if(data.rejected)status='rejected'
+    res.send(status)
   })
 })
 app.listen(PORT, () => {

@@ -24,6 +24,8 @@ const web3 = new Web3(window.ethereum);
   // state to store election details
   const [electionDetails, setElectionDetails] = useState({})
 
+  //state to store approval status
+  const [approvalStatus, setApprovalStatus] = useState('')
   const handleAccountChanged = (accounts) => {
     console.log(accounts);
     setAccount("");
@@ -37,9 +39,15 @@ const web3 = new Web3(window.ethereum);
     else console.log(res);
   };
 
-  const getelectionDetails = async()=>{
-    await axios.get('/getElectionDetails').then((data)=>{
+  const getelectionDetails = ()=>{
+     axios.get('/getElectionDetails').then((data)=>{
       setElectionDetails(data.data)
+    })
+  }
+
+  const getApprovalStatus = ()=>{
+    axios.post('getApprovalStatus', {metaid:cookie.metaid}).then((data)=>{
+      setApprovalStatus(data.data)
     })
   }
 
@@ -55,6 +63,7 @@ const web3 = new Web3(window.ethereum);
     }
     checkElectionStatus();
     getelectionDetails();
+    getApprovalStatus();
     return () => {
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
@@ -97,7 +106,7 @@ const web3 = new Web3(window.ethereum);
             </tr>
             <tr>
               <th>Approval Status</th>
-              <td></td>
+              <td>{approvalStatus}</td>
             </tr>
           </tbody>
         </table>
