@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import CandidatesDisplay from "./CandidatesDisplay";
 import { votingStarted } from "../web3_functions";
+import axios from '../axios'
 const web3 = new Web3(window.ethereum);
 
-function Home(props) {
+ function Home(props) {
   const status = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -19,6 +20,9 @@ function Home(props) {
 
   // state to store election status
   const [electionStatus, setElectionStatus] = useState(false);
+
+  // state to store election details
+  const [electionDetails, setElectionDetails] = useState({})
 
   const handleAccountChanged = (accounts) => {
     console.log(accounts);
@@ -32,6 +36,14 @@ function Home(props) {
     if (!res.error) setElectionStatus(res.message);
     else console.log(res);
   };
+
+  const getelectionDetails = async()=>{
+    await axios.get('/getElectionDetails').then((data)=>{
+      setElectionDetails(data.data)
+    })
+  }
+
+
   useEffect(() => {
     // check user is signed in or not
     !status.status.login ? navigate("/login") : null;
@@ -42,6 +54,7 @@ function Home(props) {
       window.ethereum.on("accountsChanged", handleAccountChanged);
     }
     checkElectionStatus();
+    getelectionDetails();
     return () => {
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
@@ -51,7 +64,7 @@ function Home(props) {
     <div className="d-flex flex-column container-fluid">
       <nav className="navbar navbar-expanded-md bg-light">
         <div className="container-fluid">
-          <h1 className="navbar-brand fs-1 fw-bold">{cookie.election}</h1>
+          <h1 className="navbar-brand fs-1 fw-bold">{electionDetails.election}</h1>
           {electionStatus?<h4 className="text-success">Election Started</h4>:<h4 className="text-danger">Election not yet started</h4>}
           <div className="navbarNav">
             <button
@@ -81,6 +94,10 @@ function Home(props) {
             <tr>
               <th>Metamask ID</th>
               <td>{cookie.metaid}</td>
+            </tr>
+            <tr>
+              <th>Approval Status</th>
+              <td></td>
             </tr>
           </tbody>
         </table>
