@@ -18,7 +18,7 @@ function Candidates({  instance, account}) {
     }
     
     return (
-    <div className="col-md-6 border rounded-4 p-4 m-4">
+    <div className="col-md-3 border rounded-4 p-4 m-4">
       <h2 className="fs-3 fw-medium">Candidate Registration</h2>
       <div className="mb-3 form-floating">
         <input className="form-control" type="text" value={candidate.name} onChange={handleChange} name="name" placeholder="Candidate Name"/>

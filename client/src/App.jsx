@@ -11,6 +11,7 @@ import { CookiesProvider, Cookies, useCookies } from "react-cookie";
 import { connectWeb3Metamask } from "./web3_functions";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Admin from "./Components/Admin";
+import { useNavigate } from 'react-router-dom';
 function App() {
   // cookies for user details
   const [cookie, setCookie] = useCookies();

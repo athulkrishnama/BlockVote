@@ -19,7 +19,7 @@ function Election({ instance, account, setElectionStatus }) {
     setWinner(res.message.name)
   };
   return (
-    <div className="col-md-6 border rounded-4 p-4 m-4">
+    <div className="col-md-4 border rounded-4 p-4 m-4">
       <h3>Election</h3>
       <button onClick={startVotingFun} className="btn btn-success me-3">
         Start Voting

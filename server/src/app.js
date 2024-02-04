@@ -127,7 +127,7 @@ app.post('/getApprovalStatus', (req, res) => {
     })
   }
   catch {
-
+    console.log('err')
   }
 })
 

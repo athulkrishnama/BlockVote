@@ -19,7 +19,7 @@ const getCandidates = async ()=>{
   }, [])
   
   return (
-    <div className="col-md-6 border rounded-4 p-4 m-4 row ">
+    <div className="col-md-7 border rounded-4 p-4 m-4 row ">
       <h3>Registerd Candidates</h3>
       {
         candidates.map((can)=>{
