@@ -119,11 +119,16 @@ app.get('/getElectionDetails', (req, res) => {
 
 app.post('/getApprovalStatus', (req, res) => {
   let status = 'pending'
-  get().collection('voters').findOne(req.body).then((data) => {
-    if (data.approve) status = 'approved'
-    if (data.rejected) status = 'rejected'
-    res.send(status)
-  })
+  try {
+    get().collection('voters').findOne(req.body).then((data) => {
+      if (data.approve) status = 'approved'
+      if (data.rejected) status = 'rejected'
+      res.send(status)
+    })
+  }
+  catch {
+
+  }
 })
 
 app.get('/getVoterStatistics', (req, res) => {
@@ -139,35 +144,23 @@ app.get('/getVoterStatistics', (req, res) => {
   //   }]).toArray().then((data) => {
   //     statistics.approved = data.count
   //   })
-  Promise.all([get().collection('voters').aggregate([
-    {
-      '$match': {
-        'approve': {
-          '$exists': true
-        }
-      }
-    }, {
-      '$count': 'count'
-    }]).toArray(),
-    get().collection('voters').aggregate([
-      {
-        '$match': {
-          'rejected': {
-            '$exists': true
-          }
-        }
-      }, {
-        '$count': 'count'
-      }]).toArray(),
-    get().collection('voters').aggregate([
-      {
-        '$count': 'count'
-      }]).toArray()]).then((result)=>{
-         const statistics = {registered: result[2][0].count, approved: result[0][0].count, rejected: result[1][0].count}
+  try {
+    Promise.all([
+      get().collection('voters').countDocuments(),
+      get().collection('voters').countDocuments({approve:true}),
+      get().collection('voters').countDocuments({rejected:true})
+    ]).then((result) => {
+      console.log(result)
+       const statistics = { registered: result[0], approved: result[1], rejected: result[2] }
 
-        res.send(statistics)
-      })
-})
+      res.send(statistics)
+    })
+  }
+  catch (err) {
+    console.log(err)
+  }
+}
+)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port 8000.`);
