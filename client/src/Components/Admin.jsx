@@ -29,7 +29,7 @@ function Admin(props) {
           </nav>
           <div className="row">
             <Candidates  instance={props.contractInstance} account={props.account}/>
-            <RegistedVoters approveVoter={whiteListAddress} instance={props.contractInstance} account={props.account}/>
+            <RegistedVoters  instance={props.contractInstance} account={props.account}/>
             <Election instance={props.contractInstance} account={props.account} setElectionStatus={setElectionStatus}/>
             <ListCandidates instance={props.contractInstance} account={props.account}/>
           </div>
