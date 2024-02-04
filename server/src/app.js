@@ -168,6 +168,13 @@ app.get('/getVoterStatistics', (req, res) => {
 }
 )
 
+
+app.get('/electionDeclared',(req, res)=>{
+  get().collection('election').updateOne({},{$set:{declared:true}}).then(()=>{
+    res.send()
+  })
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port 8000.`);
 });
