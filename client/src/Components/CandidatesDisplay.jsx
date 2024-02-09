@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getAllCandidate , putVote} from "../web3_functions";
+import { getAllCandidate, putVote } from "../web3_functions";
 import axios from "../axios";
 
-function CandidatesDisplay({ instance, account, canVote, metaid, setNotVoted }) {
+function CandidatesDisplay({
+  instance,
+  account,
+  canVote,
+  metaid,
+  setNotVoted,
+  electionDetails,
+}) {
   // state for candidates
   const [candidates, setCandidates] = useState([]);
 
@@ -13,13 +20,14 @@ function CandidatesDisplay({ instance, account, canVote, metaid, setNotVoted }) 
     setCandidates(res.message);
   };
 
-  const vote = async (address)=>{
-    const res = await putVote(instance, account, address)
-    console.log(res)
-    if(!res.error)axios.post('/setUserVoted', {metaid:metaid}).then(()=>{
-      setNotVoted(false)
-    })
-  }
+  const vote = async (address) => {
+    const res = await putVote(instance, account, address);
+    console.log(res);
+    if (!res.error)
+      axios.post("/setUserVoted", { metaid: metaid }).then(() => {
+        setNotVoted(false);
+      });
+  };
 
   useEffect(() => {
     getCandidates();
@@ -34,7 +42,19 @@ function CandidatesDisplay({ instance, account, canVote, metaid, setNotVoted }) 
             <h3 className="card-title">{can.name}</h3>
             <div className="car-body">
               <p className="card-text">{can.candidateAddress}</p>
-              <button onClick={()=>{vote(can.candidateAddress)}} className="btn btn-primary m-2" disabled={!canVote && 'disabled' }>Vote</button>
+              {
+                electionDetails.declared?
+                <button className="btn btn-success m-2">{can.votes.toString()}</button>
+                :<button
+                  onClick={() => {
+                    vote(can.candidateAddress);
+                  }}
+                  className="btn btn-primary m-2"
+                  disabled={!canVote && "disabled"}
+                >
+                  Vote
+                </button>
+              }
             </div>
           </div>
         );

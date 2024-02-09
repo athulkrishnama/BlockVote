@@ -42,6 +42,7 @@ function Home(props) {
   // state to store election details
   const [electionDetails, setElectionDetails] = useState({});
 
+
   //state to store approval status
   const [approvalStatus, setApprovalStatus] = useState("");
   const handleAccountChanged = (accounts) => {
@@ -114,7 +115,9 @@ function Home(props) {
           <h1 className="navbar-brand fs-1 fw-bold">
             {electionDetails.election}
           </h1>
-          {electionStatus ? (
+          {electionDetails.declared?
+          <h4>Result Declared</h4>:
+          electionStatus ? (
             <h4 className="text-success">Election Started</h4>
           ) : (
             <h4 className="text-danger">Election not yet started</h4>
@@ -170,6 +173,7 @@ function Home(props) {
         account={props.account}
         metaid={account}
         setNotVoted={setIsNotVoted}
+        electionDetails={electionDetails}
       />
     </div>
   );
