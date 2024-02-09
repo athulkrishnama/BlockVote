@@ -46,6 +46,10 @@ function RegistedVoters({ instance, account }) {
     });
   };
 
+  const refreshData = ()=>{
+    fetchData()
+    getVoterStatistics()
+  }
 
   useEffect(() => {
     fetchData();
@@ -75,6 +79,7 @@ function RegistedVoters({ instance, account }) {
         <h1 className="fs-2 fw-medium m-2 text-center">
           Pending Voters to Approve
         </h1>
+        <button className="btn btn-primary" onClick={refreshData}>Refresh</button>
         <ul className="list-group">
           {voters.map((obj) => {
             return (

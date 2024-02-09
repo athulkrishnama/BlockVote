@@ -12,6 +12,7 @@ const getCandidates = async ()=>{
     setCandidates(res.message)
 }
 
+
   useEffect(() => {
     
   getCandidates()
@@ -19,18 +20,21 @@ const getCandidates = async ()=>{
   }, [])
   
   return (
-    <div className="col-md-7 border rounded-4 p-4 m-4 row ">
+    <div className="col-md-7 border rounded-4 p-4 m-4">
       <h3>Registerd Candidates</h3>
-      {
-        candidates.map((can)=>{
-            return(
-                <div key={can.candidateAddress} className="card col-md-4 mx-2">
-                    <h3 className="cardTitle">{can.name}</h3>
-                    <p className="cardBody">{can.candidateAddress}</p>
-                </div>
-            )
-        })
-      }
+      <button className="btn btn-primary" onClick={getCandidates}>Refresh</button>
+      <div className="row mt-2">
+        {
+          candidates.map((can)=>{
+              return(
+                  <div key={can.candidateAddress} className="card col-md-3 mx-2">
+                      <h3 className="cardTitle">{can.name}</h3>
+                      <p className="cardBody">{can.candidateAddress}</p>
+                  </div>
+              )
+          })
+        }
+      </div>
     </div>
   );
 }
