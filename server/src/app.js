@@ -117,14 +117,15 @@ app.get('/getElectionDetails', (req, res) => {
   })
 })
 
-app.post('/getApprovalStatus', (req, res) => {
-  let status = 'pending'
+app.post('/getVoterDetails', (req, res) => {
   try {
     get().collection('voters').findOne(req.body).then((data) => {
       try {
-        if (data.approve) status = 'approved'
-        if (data.rejected) status = 'rejected'
-        res.send(status)
+        let obj={status:'pending'}
+        if (data.approve) obj.status = 'approved'
+        if (data.rejected) obj.status = 'rejected'
+        if(data.voted) obj.voted = true
+        res.send(obj)
       }
       catch{
         console.log('error')
@@ -171,6 +172,13 @@ app.get('/getVoterStatistics', (req, res) => {
 
 app.get('/electionDeclared',(req, res)=>{
   get().collection('election').updateOne({},{$set:{declared:true}}).then(()=>{
+    res.send()
+  })
+})
+
+app.post('/setUserVoted' , (req, res)=>{
+  get().collection('voters').updateOne({metaid:req.body.metaid},{$set:{voted:true}}).then((data)=>{
+    console.log(data)
     res.send()
   })
 })

@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import CandidatesDisplay from "./CandidatesDisplay";
 import { votingStarted } from "../web3_functions";
-import axios from '../axios'
+import axios from "../axios";
 const web3 = new Web3(window.ethereum);
 
- function Home(props) {
+function Home(props) {
   const status = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -18,14 +18,32 @@ const web3 = new Web3(window.ethereum);
   //useState to store current metamask account address
   const [account, setAccount] = useState("");
 
+  // voter need to satisfy 4 condition to vote
+  // 1.Election must be started
+  // 2.Voter must be approved
+  // 3.selected metaid and users metaid should be Same
+  // 4.Voter should not be voted before
+
+  // state to store use can vote?
+  const [canVote, setCanVote] = useState(false);
+
   // state to store election status
   const [electionStatus, setElectionStatus] = useState(false);
 
+  // state to store approval status
+  const [approval, setApproval] = useState(false);
+
+  // state to store wheather currently selected metaid and users metaid is same
+  const [isMetaid, setIsMetaid] = useState(false);
+
+  // state to store wheather user already voted
+  const [isNotVoted, setIsNotVoted] = useState(false);
+
   // state to store election details
-  const [electionDetails, setElectionDetails] = useState({})
+  const [electionDetails, setElectionDetails] = useState({});
 
   //state to store approval status
-  const [approvalStatus, setApprovalStatus] = useState('')
+  const [approvalStatus, setApprovalStatus] = useState("");
   const handleAccountChanged = (accounts) => {
     console.log(accounts);
     setAccount("");
@@ -39,19 +57,29 @@ const web3 = new Web3(window.ethereum);
     else console.log(res);
   };
 
-  const getelectionDetails = ()=>{
-     axios.get('/getElectionDetails').then((data)=>{
-      setElectionDetails(data.data)
-    })
-  }
+  const getelectionDetails = () => {
+    axios.get("/getElectionDetails").then((data) => {
+      setElectionDetails(data.data);
+    });
+  };
 
-  const getApprovalStatus = ()=>{
-    if(cookie.metaid)
-    axios.post('getApprovalStatus', {metaid:cookie.metaid}).then((data)=>{
-      setApprovalStatus(data.data)
-    })
-  }
+  const getVoterDetails = () => {
+    if (cookie.metaid)
+      axios.post("/getVoterDetails", { metaid: cookie.metaid }).then((data) => {
+        setApprovalStatus(data.data.status);
+        if (approvalStatus == "approved") setApproval(true);
+        setIsNotVoted(!data.data.voted);
+      });
+  };
 
+  const checkMetaid = () => {
+    if(account == cookie.metaid){
+      setIsMetaid(true)
+    }
+    else{
+      setIsMetaid(false)
+    }
+  };
 
   // !status.status.login ? navigate("/login") : null;
   useEffect(() => {
@@ -65,18 +93,32 @@ const web3 = new Web3(window.ethereum);
     }
     checkElectionStatus();
     getelectionDetails();
-    getApprovalStatus();
+    getVoterDetails();
+    checkMetaid();
+    if (electionStatus && approval && isNotVoted && isMetaid) {
+      setCanVote(true);
+    } else {
+      setCanVote(false);
+    }
+    console.log(approvalStatus)
+    console.log(props.account)
     return () => {
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
-  }, [account]);
+  }, [account, isMetaid , approval, electionStatus, isNotVoted]);
 
   return (
     <div className="d-flex flex-column container-fluid">
       <nav className="navbar navbar-expanded-md bg-light">
         <div className="container-fluid">
-          <h1 className="navbar-brand fs-1 fw-bold">{electionDetails.election}</h1>
-          {electionStatus?<h4 className="text-success">Election Started</h4>:<h4 className="text-danger">Election not yet started</h4>}
+          <h1 className="navbar-brand fs-1 fw-bold">
+            {electionDetails.election}
+          </h1>
+          {electionStatus ? (
+            <h4 className="text-success">Election Started</h4>
+          ) : (
+            <h4 className="text-danger">Election not yet started</h4>
+          )}
           <div className="navbarNav">
             <button
               className="btn btn-primary "
@@ -110,6 +152,10 @@ const web3 = new Web3(window.ethereum);
               <th>Approval Status</th>
               <td>{approvalStatus}</td>
             </tr>
+            <tr>
+              <th>Voting Status</th>
+              <td>{isNotVoted?"Not Voted":"Voted"}</td>
+            </tr>
           </tbody>
         </table>
         <p className="text-danger">
@@ -119,9 +165,11 @@ const web3 = new Web3(window.ethereum);
         </p>
       </div>
       <CandidatesDisplay
-        electionStatus={electionStatus}
+        canVote={canVote}
         instance={props.contractInstance}
         account={props.account}
+        metaid={account}
+        setNotVoted={setIsNotVoted}
       />
     </div>
   );
