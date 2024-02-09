@@ -23,10 +23,10 @@ function Election({ instance, account, setElectionStatus }) {
     if (!res.error) setElectionStatus(false);
   };
 
+
   const displayResult = async () => {
     const res = await getAllCandidate(instance, account);
     setCandidates(res.message);
-    console.log(candidates);
   };
 
   const getWinnerFun = async () => {
@@ -67,7 +67,7 @@ function Election({ instance, account, setElectionStatus }) {
             {candidates.map((can) => {
               return (
                 <li className="list-group-item">
-                  <p>{can.name}</p>
+                  <p className={can.winner&&"text-success"} >{can.name}</p>
                   <p>Vote: {can.votes.toString()}</p>
                 </li>
               );

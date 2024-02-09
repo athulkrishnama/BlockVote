@@ -75,17 +75,17 @@ function RegistedVoters({ instance, account }) {
         </table>
       </div>
 
-      <div className="col-md-3 border rounded-4 m-4">
+      <div className="col-md-3 border rounded-4 m-4 voter-list">
         <h1 className="fs-2 fw-medium m-2 text-center">
           Pending Voters to Approve
         </h1>
         <button className="btn btn-primary" onClick={refreshData}>Refresh</button>
-        <ul className="list-group">
+        <ul className="list-group my-3 rounded-3 h-75 overflow-auto">
           {voters.map((obj) => {
             return (
               <li
                 key={obj._id}
-                className="list-group-item d-flex justify-content-between align-items-center"
+                className="list-group-item d-flex justify-content-between align-items-center "
               >
                 <div>
                   <p>Name: {obj.name}</p>
