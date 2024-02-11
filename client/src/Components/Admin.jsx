@@ -11,9 +11,14 @@ function Admin(props) {
   // state to registered or logined
   // if one admin account exists user cant create another admin account 
   const [registerd, setRegistered] = useState(false);
+
+  // state to store login status
   const [login, setLogin] = useState(false);
+
+  // state to store election status
   const [electionStatus, setElectionStatus] = useState(false)
-  //query to database if admin exixts
+
+  //query to database if admin exists
   axios.get("/admin").then((data) => {
     setRegistered(data.data.registerd);
   });

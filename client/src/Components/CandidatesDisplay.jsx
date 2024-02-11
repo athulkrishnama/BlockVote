@@ -10,6 +10,10 @@ function CandidatesDisplay({
   setNotVoted,
   electionDetails,
 }) {
+  // component to display candidate list in voters page
+  // used to vote and and show votecount if election declared
+  // voter can vote only if canVote is true
+
   // state for candidates
   const [candidates, setCandidates] = useState([]);
 
@@ -20,6 +24,7 @@ function CandidatesDisplay({
     setCandidates(res.message);
   };
 
+  // function to vote 
   const vote = async (address) => {
     const res = await putVote(instance, account, address);
     console.log(res);

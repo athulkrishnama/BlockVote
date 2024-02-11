@@ -9,6 +9,7 @@ import axios from "../axios";
 const web3 = new Web3(window.ethereum);
 
 function Home(props) {
+  // context of login status
   const status = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -59,6 +60,7 @@ function Home(props) {
     else console.log(res);
   };
 
+  // fucntion to get details of elction to fetch election name and check wheather result is declared or not
   const getelectionDetails = () => {
     axios.get("/getElectionDetails").then(async(data) => {
       setElectionDetails(data.data);
@@ -69,6 +71,7 @@ function Home(props) {
     });
   };
 
+  // function to fetch voters details , isvoter approved or rejected, voted , name , metamask id, email
   const getVoterDetails = () => {
     if (cookie.metaid)
       axios.post("/getVoterDetails", { metaid: cookie.metaid }).then((data) => {
@@ -78,6 +81,7 @@ function Home(props) {
       });
   };
 
+  // function to check users registered metaid and selected metaid in metamask is matching
   const checkMetaid = () => {
     if(account == cookie.metaid){
       setIsMetaid(true)
@@ -87,6 +91,7 @@ function Home(props) {
     }
   };
 
+  // function to find winner if there is multiple winners
   const getWinners = (candidates)=>{
     let highest = 0
     candidates.map((can)=>{
@@ -101,10 +106,13 @@ function Home(props) {
         return false
     }))
   }
-  // !status.status.login ? navigate("/login") : null;
+
+  
   useEffect(() => {
     // check user is signed in or not
     !status.status.login ? navigate("/login") : null;
+
+    // fetch current account
     web3.eth.getAccounts().then((data) => setAccount(data[0].toLowerCase()));
 
     //change account when account changed in metamask wallet
@@ -115,6 +123,8 @@ function Home(props) {
     getelectionDetails();
     getVoterDetails();
     checkMetaid();
+
+    // check weather all conditons satisfied
     if (electionStatus && approval && isNotVoted && isMetaid) {
       setCanVote(true);
     } else {

@@ -2,17 +2,21 @@ import React, { useState , useEffect} from "react";
 import axios from "../axios";
 
 function AdminRegister(props) {
+  // state to store user data
   const [user, setUser] = useState({
     email: "",
     password: "",
     election: "",
     metaid: props.account,
   });
+
+  // function to handle changes in input field
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
+  // function to handle register of user
   const register = () => {
     if (
       user.email == "" ||

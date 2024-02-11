@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router-dom';
 function App() {
   // cookies for user details
   const [cookie, setCookie] = useCookies();
+
+
   //save state of login
   // set login to true if value in cookie is one else login will set to false
   const [status, setStatus] = useState({
@@ -22,13 +24,19 @@ function App() {
     msg: "",
   });
 
+  // state to store contract instance and account
   const [contractInstance, setContract] = useState(null);
   const [accounts, setAccounts] = useState();
+
+
   useEffect(() => {
     setStatus({ ...status, login: cookie.login == "1" ? true : false });
+
+    // connecting to web3provider
     async function connect() {
       const provider = await detectEthereumProvider();
       try {
+        // check weather provider detected if detected account and contract instace will be changed
         if (provider) {
           console.log("Metamask found");
           let { accounts, instance } = await connectWeb3Metamask(provider);
@@ -47,7 +55,7 @@ function App() {
         console.log(error);
       }
     }
-    setTimeout(connect, 1500);
+    setTimeout(connect, 500);
   }, []);
 
   return (

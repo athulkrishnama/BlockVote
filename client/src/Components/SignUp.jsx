@@ -3,8 +3,9 @@ import { AppContext } from "../context";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axios";
+import Web3 from "web3";
 import { useCookies } from "react-cookie";
-
+const web3 = new Web3(window.ethereum);
  function SignUp({account}) {
   const navigate = useNavigate();
 
@@ -71,14 +72,15 @@ import { useCookies } from "react-cookie";
 
   useEffect(() => {
     loginStatus.setStatus({ ...loginStatus.status, msg: "" });
-
+    
+    web3.eth.getAccounts().then((data) => setUser({...user, metaid:data[0].toLowerCase()}));
     //listener for account change
     window.ethereum.on("accountsChanged", handleAccountChanged);
     return () => {
     //remove lister on unmount
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
-  }, [user]);
+  }, []);
 
   return (
     <div>
@@ -127,7 +129,6 @@ import { useCookies } from "react-cookie";
               value={user.metaid}
               type="text"
               name="metaid"
-              onChange={handleChange}
               required
               disabled
               className="form-control"

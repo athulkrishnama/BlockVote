@@ -8,27 +8,37 @@ import {
 import { useState } from "react";
 import axios from "../axios";
 function Election({ instance, account, setElectionStatus }) {
+  // component inside admin page to start, stop voting and declare winner and show vote count of candidates
+
+  // state to store winner
   const [winner, setWinner] = useState([]);
 
+  // state to store weather election is declared
   const [declared, setDeclared] = useState(false);
 
+  // state to store candidate list
   const [candidates, setCandidates] = useState([]);
+
+  // dunction to start voting
   const startVotingFun = async () => {
     const res = await startVoting(instance, account);
     console.log(res);
     if (!res.error) setElectionStatus(true);
   };
+
+  // function to stop voting
   const stopVotingFun = async () => {
     const res = await stopVoting(instance, account);
     if (!res.error) setElectionStatus(false);
   };
 
-
+  // function to fetch candidate details. 
   const displayResult = async () => {
     const res = await getAllCandidate(instance, account);
     setCandidates(res.message);
   };
 
+  // find winner if there is multiple candidates with same vote
   const getWinners = (candidates)=>{
     let highest = 0
     candidates.map((can)=>{
@@ -44,6 +54,7 @@ function Election({ instance, account, setElectionStatus }) {
     }))
   }
 
+  // function to declare winner. 
   const getWinnerFun = async () => {
     const res = await getAllCandidate(instance, account);
     getWinners(res.message);
@@ -53,14 +64,17 @@ function Election({ instance, account, setElectionStatus }) {
       setDeclared(true);
     });
   };
+
+
   useEffect(() => {
+    // check weather result is declared or not
     axios.get("/getElectionDetails").then((data) => {
       if (data.data.declared) {
         setDeclared(true);
         getWinnerFun();
       }
     });
-    console.log("Winners are ", winner  )
+    // console.log("Winners are ", winner  )
     displayResult();
   }, []);
 
