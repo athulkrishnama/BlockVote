@@ -69,18 +69,26 @@ const web3 = new Web3(window.ethereum);
     handleChange({ target: { name: "metaid", value: accounts[0] } });
   };
 
+  console.log(
+    "refresh"
+  );
+
+  useEffect(() => {
+    
+    web3.eth.getAccounts().then((data) => setUser({...user, metaid:data[0].toLowerCase()}));
+  }, [])
+  
 
   useEffect(() => {
     loginStatus.setStatus({ ...loginStatus.status, msg: "" });
     
-    web3.eth.getAccounts().then((data) => setUser({...user, metaid:data[0].toLowerCase()}));
     //listener for account change
     window.ethereum.on("accountsChanged", handleAccountChanged);
     return () => {
     //remove lister on unmount
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
-  }, []);
+  }, [user]);
 
   return (
     <div>
