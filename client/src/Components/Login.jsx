@@ -19,6 +19,16 @@ function Login() {
   // cookie to store details of logined user
   const [cookie, setCookie] = useCookies(['user'])
 
+    // store election details
+    const [ElectionDetails, setElectionDetails] = useState({})
+
+    // function to fetch election details
+  
+    const getElectionDetails = ()=>{
+      axios.get("/getElectionDetails").then((data)=>{
+        setElectionDetails(data.data)
+      })
+    }
   
 
   //function to handle change data in the input field 
@@ -54,9 +64,17 @@ function Login() {
         });
     }
   };
+useEffect(() => {
+ getElectionDetails()
+}, [])
 
   
   return (
+    !ElectionDetails.election?
+    <div className="">
+      <h1 className="">Election not yet Declared </h1>
+      <h3>Contact Your Admin</h3>
+    </div>:
     <div className="d-flex align-items-center justify-content-center full-page row container-fluid">
       <div className="login col-md-3 shadow-lg rounded-3 p-3 pt-4">
         <div className="mb-3 form-floating">

@@ -44,7 +44,7 @@ function Home(props) {
   const [electionDetails, setElectionDetails] = useState({});
 
   // state for winner
-  const [winner, setWinner] = useState([])
+  const [winner, setWinner] = useState([]);
   //state to store approval status
   const [approvalStatus, setApprovalStatus] = useState("");
   const handleAccountChanged = (accounts) => {
@@ -62,11 +62,16 @@ function Home(props) {
 
   // fucntion to get details of elction to fetch election name and check wheather result is declared or not
   const getelectionDetails = () => {
-    axios.get("/getElectionDetails").then(async(data) => {
+    axios.get("/getElectionDetails").then(async (data) => {
       setElectionDetails(data.data);
-      if(data.data.declared){
-        const res = await getAllCandidate(props.contractInstance, props.account)
-        getWinners(res.message)
+
+      !data.data.election ? navigate("/login") : null;
+      if (data.data.declared) {
+        const res = await getAllCandidate(
+          props.contractInstance,
+          props.account
+        );
+        getWinners(res.message);
       }
     });
   };
@@ -83,35 +88,32 @@ function Home(props) {
 
   // function to check users registered metaid and selected metaid in metamask is matching
   const checkMetaid = () => {
-    if(account == cookie.metaid){
-      setIsMetaid(true)
-    }
-    else{
-      setIsMetaid(false)
+    if (account == cookie.metaid) {
+      setIsMetaid(true);
+    } else {
+      setIsMetaid(false);
     }
   };
 
   // function to find winner if there is multiple winners
-  const getWinners = (candidates)=>{
-    let highest = 0
-    candidates.map((can)=>{
-      if(parseInt(can.votes) > highest){
-        highest = parseInt(can.votes)
+  const getWinners = (candidates) => {
+    let highest = 0;
+    candidates.map((can) => {
+      if (parseInt(can.votes) > highest) {
+        highest = parseInt(can.votes);
       }
-    })
-    setWinner(candidates.filter((can)=>{
-      if(parseInt(can.votes) ==  highest)
-          return true;
-      else 
-        return false
-    }))
-  }
+    });
+    setWinner(
+      candidates.filter((can) => {
+        if (parseInt(can.votes) == highest) return true;
+        else return false;
+      })
+    );
+  };
 
-  
   useEffect(() => {
     // check user is signed in or not
     !status.status.login ? navigate("/login") : null;
-
     // fetch current account
     web3.eth.getAccounts().then((data) => setAccount(data[0].toLowerCase()));
 
@@ -130,12 +132,12 @@ function Home(props) {
     } else {
       setCanVote(false);
     }
-    console.log(approvalStatus)
-    console.log(props.account)
+    console.log(approvalStatus);
+    console.log(props.account);
     return () => {
       window.ethereum.off("accountsChanged", handleAccountChanged);
     };
-  }, [account, isMetaid , approval, electionStatus, isNotVoted]);
+  }, [account, isMetaid, approval, electionStatus, isNotVoted]);
 
   return (
     <div className="d-flex flex-column container-fluid">
@@ -144,9 +146,9 @@ function Home(props) {
           <h1 className="navbar-brand fs-1 fw-bold">
             {electionDetails.election}
           </h1>
-          {electionDetails.declared?
-          <h4>Result Declared</h4>:
-          electionStatus ? (
+          {electionDetails.declared ? (
+            <h4>Result Declared</h4>
+          ) : electionStatus ? (
             <h4 className="text-success">Election Started</h4>
           ) : (
             <h4 className="text-danger">Election not yet started</h4>
@@ -186,7 +188,7 @@ function Home(props) {
             </tr>
             <tr>
               <th>Voting Status</th>
-              <td>{isNotVoted?"Not Voted":"Voted"}</td>
+              <td>{isNotVoted ? "Not Voted" : "Voted"}</td>
             </tr>
           </tbody>
         </table>
@@ -196,14 +198,17 @@ function Home(props) {
             : null}
         </p>
       </div>
-      {
-        electionDetails.declared&&(
-          <h1>Winner is : {winner[0]?winner.map((can)=>{
-            return can.name + " "
-            console.log("winners are:",winner)
-          }):""}</h1>
-        )
-      }
+      {electionDetails.declared && (
+        <h1>
+          Winner is :{" "}
+          {winner[0]
+            ? winner.map((can) => {
+                return can.name + " ";
+                console.log("winners are:", winner);
+              })
+            : ""}
+        </h1>
+      )}
       <CandidatesDisplay
         canVote={canVote}
         instance={props.contractInstance}

@@ -21,6 +21,17 @@ const web3 = new Web3(window.ethereum);
     metaid: account
   });
 
+  // store election details
+  const [ElectionDetails, setElectionDetails] = useState({})
+
+  // function to fetch election details
+
+  const getElectionDetails = ()=>{
+    axios.get("/getElectionDetails").then((data)=>{
+      setElectionDetails(data.data)
+    })
+  }
+
   // cookie to save user details
   const [cookie, setCookie] = useCookies(["user"]);
 
@@ -76,6 +87,7 @@ const web3 = new Web3(window.ethereum);
   useEffect(() => {
     
     web3.eth.getAccounts().then((data) => setUser({...user, metaid:data[0].toLowerCase()}));
+    getElectionDetails()
   }, [])
   
 
@@ -91,6 +103,11 @@ const web3 = new Web3(window.ethereum);
   }, [user]);
 
   return (
+    !ElectionDetails.election?
+    <div className="">
+      <h1 className="">Election not yet Declared </h1>
+      <h3>Contact Your Admin</h3>
+    </div>:
     <div>
       <div className="d-flex align-items-center justify-content-center full-page row container-fluid">
         <div className="login col-md-3 shadow-lg rounded-3 p-3 pt-4">
