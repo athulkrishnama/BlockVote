@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import axios from "../axios";
 function Election({ instance, account, setElectionStatus }) {
-  const [winner, setWinner] = useState("");
+  const [winner, setWinner] = useState([]);
 
   const [declared, setDeclared] = useState(false);
 
@@ -29,9 +29,24 @@ function Election({ instance, account, setElectionStatus }) {
     setCandidates(res.message);
   };
 
+  const getWinners = (candidates)=>{
+    let highest = 0
+    candidates.map((can)=>{
+      if(parseInt(can.votes) > highest){
+        highest = parseInt(can.votes)
+      }
+    })
+    setWinner(candidates.filter((can)=>{
+      if(parseInt(can.votes) ==  highest)
+          return true;
+      else 
+        return false
+    }))
+  }
+
   const getWinnerFun = async () => {
-    const res = await getWinner(instance, account);
-    setWinner(res.message.name);
+    const res = await getAllCandidate(instance, account);
+    getWinners(res.message);
     axios.get("/electionDeclared").then(() => {
       console.log("declared");
       displayResult();
@@ -45,6 +60,7 @@ function Election({ instance, account, setElectionStatus }) {
         getWinnerFun();
       }
     });
+    console.log("Winners are ", winner  )
     displayResult();
   }, []);
 
@@ -60,13 +76,13 @@ function Election({ instance, account, setElectionStatus }) {
       <button onClick={getWinnerFun} className="btn btn-primary">
         Get Winner
       </button>
-      <h2 className="border fw-bold mt-3 rounded p-1">{winner}</h2>
+      <h2 className="border fw-bold mt-3 rounded p-1">{winner[0]?winner.map((can)=>can.name+" "):""}</h2>
       {declared && (
         <div>
           <ul className="list-group">
             {candidates.map((can) => {
               return (
-                <li className="list-group-item">
+                <li className="list-group-item" key={can.candidatesAddress}>
                   <p className={can.winner&&"text-success"} >{can.name}</p>
                   <p>Vote: {can.votes.toString()}</p>
                 </li>

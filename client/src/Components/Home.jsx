@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import CandidatesDisplay from "./CandidatesDisplay";
-import { votingStarted } from "../web3_functions";
+import { getAllCandidate, votingStarted } from "../web3_functions";
 import axios from "../axios";
 const web3 = new Web3(window.ethereum);
 
@@ -42,7 +42,8 @@ function Home(props) {
   // state to store election details
   const [electionDetails, setElectionDetails] = useState({});
 
-
+  // state for winner
+  const [winner, setWinner] = useState([])
   //state to store approval status
   const [approvalStatus, setApprovalStatus] = useState("");
   const handleAccountChanged = (accounts) => {
@@ -59,8 +60,12 @@ function Home(props) {
   };
 
   const getelectionDetails = () => {
-    axios.get("/getElectionDetails").then((data) => {
+    axios.get("/getElectionDetails").then(async(data) => {
       setElectionDetails(data.data);
+      if(data.data.declared){
+        const res = await getAllCandidate(props.contractInstance, props.account)
+        getWinners(res.message)
+      }
     });
   };
 
@@ -82,6 +87,20 @@ function Home(props) {
     }
   };
 
+  const getWinners = (candidates)=>{
+    let highest = 0
+    candidates.map((can)=>{
+      if(parseInt(can.votes) > highest){
+        highest = parseInt(can.votes)
+      }
+    })
+    setWinner(candidates.filter((can)=>{
+      if(parseInt(can.votes) ==  highest)
+          return true;
+      else 
+        return false
+    }))
+  }
   // !status.status.login ? navigate("/login") : null;
   useEffect(() => {
     // check user is signed in or not
@@ -167,6 +186,14 @@ function Home(props) {
             : null}
         </p>
       </div>
+      {
+        electionDetails.declared&&(
+          <h1>Winner is : {winner[0]?winner.map((can)=>{
+            return can.name + " "
+            console.log("winners are:",winner)
+          }):""}</h1>
+        )
+      }
       <CandidatesDisplay
         canVote={canVote}
         instance={props.contractInstance}
