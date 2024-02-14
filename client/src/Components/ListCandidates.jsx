@@ -35,8 +35,11 @@ const getCandidates = async ()=>{
           candidates.map((can)=>{
               return(
                   <div key={can.candidateAddress} className="card col-md-3 mx-2">
-                      <h3 className="cardTitle">{can.name}</h3>
-                      <p className="cardBody">{can.candidateAddress&&maskId(can.candidateAddress)}</p>
+                      <img src={"http://localhost:8000/uploads/"+can.candidateAddress.toLowerCase()} alt="" className="card-image-top mt-2 rounded-2" />
+                      <div className="card-body">
+                        <h3 className="card-title">{can.name}</h3>
+                        <p className="card-text">{can.candidateAddress&&maskId(can.candidateAddress)}</p>
+                      </div>
                   </div>
               )
           })

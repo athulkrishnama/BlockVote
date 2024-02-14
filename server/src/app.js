@@ -1,13 +1,27 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const multer = require('multer')
 const PORT = 8000;
 const { main, get } = require('./connection')
 main()
 
 app.use(cors());
+app.use('/uploads', express.static('uploads'))
 app.use(express.json());
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, req.body.metaid);
+  },
+});
+
+const upload = multer({storage:storage})
+
+const uploadImage = upload.single('image')
 
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
@@ -183,6 +197,12 @@ app.post('/setUserVoted' , (req, res)=>{
   })
 })
 
+app.post('/registerCandidate', (req, res)=>{
+  uploadImage(req, res, (err)=>{
+    if(err) console.log(err)
+  })
+  res.send();
+})
 app.listen(PORT, () => {
   console.log(`Server is running on port 8000.`);
 });

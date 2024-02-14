@@ -50,8 +50,9 @@ function CandidatesDisplay({
       {candidates.map((can) => {
         return (
           <div key={can.candidateAddress} className="card col-md-2 mx-2">
-            <h3 className="card-title">{can.name}</h3>
+            <img src={"http://localhost:8000/uploads/"+can.candidateAddress.toLowerCase()} className="card-image-top mt-2" alt="" />
             <div className="car-body">
+            <h3 className="card-title">{can.name}</h3>
               <p className="card-text">{can.candidateAddress&&maskId(can.candidateAddress)}</p>
               {
                 electionDetails.declared?
