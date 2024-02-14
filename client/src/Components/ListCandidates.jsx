@@ -36,7 +36,7 @@ const getCandidates = async ()=>{
               return(
                   <div key={can.candidateAddress} className="card col-md-3 mx-2">
                       <h3 className="cardTitle">{can.name}</h3>
-                      <p className="cardBody">{maskId(can.candidateAddress)}</p>
+                      <p className="cardBody">{can.candidateAddress&&maskId(can.candidateAddress)}</p>
                   </div>
               )
           })

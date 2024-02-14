@@ -187,7 +187,7 @@ function Home(props) {
             </tr>
             <tr>
               <th>Metamask ID</th>
-              <td>{maskId(cookie.metaid)}</td>
+              <td>{cookie.metaid&&maskId(cookie.metaid)}</td>
             </tr>
             <tr>
               <th>Approval Status</th>
