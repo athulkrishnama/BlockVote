@@ -34,6 +34,12 @@ function CandidatesDisplay({
       });
   };
 
+  const maskId = (metaid)=>{
+    let maskedId = "0XXXXXX"
+    maskedId += metaid.substring(metaid.length-10) 
+    return maskedId
+  }
+
   useEffect(() => {
     getCandidates();
   }, []);
@@ -46,7 +52,7 @@ function CandidatesDisplay({
           <div key={can.candidateAddress} className="card col-md-2 mx-2">
             <h3 className="card-title">{can.name}</h3>
             <div className="car-body">
-              <p className="card-text">{can.candidateAddress}</p>
+              <p className="card-text">{maskId(can.candidateAddress)}</p>
               {
                 electionDetails.declared?
                 <button className="btn btn-success m-2">{can.votes.toString()}</button>

@@ -111,6 +111,13 @@ function Home(props) {
     );
   };
 
+  // function to mask metaid
+  const maskId = (metaid)=>{
+    let maskedId = "0XXXXXX"
+    maskedId += metaid.substring(metaid.length-10) 
+    return maskedId
+  }
+
   useEffect(() => {
     // check user is signed in or not
     !status.status.login ? navigate("/login") : null;
@@ -180,7 +187,7 @@ function Home(props) {
             </tr>
             <tr>
               <th>Metamask ID</th>
-              <td>{cookie.metaid}</td>
+              <td>{maskId(cookie.metaid)}</td>
             </tr>
             <tr>
               <th>Approval Status</th>

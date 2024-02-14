@@ -12,6 +12,13 @@ const getCandidates = async ()=>{
     setCandidates(res.message)
 }
 
+  // function to mask metaid
+  const maskId = (metaid)=>{
+    let maskedId = "0XXXXXX"
+    maskedId += metaid.substring(metaid.length-10) 
+    return maskedId
+  }
+
 
   useEffect(() => {
     
@@ -29,7 +36,7 @@ const getCandidates = async ()=>{
               return(
                   <div key={can.candidateAddress} className="card col-md-3 mx-2">
                       <h3 className="cardTitle">{can.name}</h3>
-                      <p className="cardBody">{can.candidateAddress}</p>
+                      <p className="cardBody">{maskId(can.candidateAddress)}</p>
                   </div>
               )
           })
