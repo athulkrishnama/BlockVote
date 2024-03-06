@@ -2,15 +2,11 @@
 
 mongosh blockvote --eval "printjson(db.dropDatabase())"  
 
-cd contracts
-truffle migrate
-wait
-truffle develop &
-sleep 5
-cd ../server
+cd server
 npm start &
 
 cd ../client
+#serve -s dist -l 5173 &
 npm run dev &
 
 
