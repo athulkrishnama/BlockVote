@@ -3,7 +3,7 @@ import axios from "../axios";
 import AdminRegister from "./AdminRegister";
 import AdminLogin from "./AdminLogin";
 import RegistedVoters from "./RegistedVoters";
-import {registerCandidates, whiteListAddress, getAllCandidate, getWinner, startVoting, stopVoting} from '../web3_functions'
+import {registerCandidates, whiteListAddress, getAllCandidate, getWinner, startVoting, stopVoting , votingStarted} from '../web3_functions'
 import Candidates from "./Candidates";
 import Election from "./Election";
 import ListCandidates from "./ListCandidates";
@@ -22,6 +22,18 @@ function Admin(props) {
   axios.get("/admin").then((data) => {
     setRegistered(data.data.registerd);
   });
+
+  const checkElectionStatus = async () => {
+    const res = await votingStarted(props.contractInstance, props.account);
+    console.log("election", res);
+    if (!res.error) setElectionStatus(res.message);
+    else console.log(res);
+  };
+
+  useEffect(() => {
+    checkElectionStatus();
+  }, [])
+  
 
   return (
     <div>

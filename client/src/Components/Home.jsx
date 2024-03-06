@@ -156,9 +156,9 @@ function Home(props) {
           {electionDetails.declared ? (
             <h4>Result Declared</h4>
           ) : electionStatus ? (
-            <h4 className="text-success">Election Started</h4>
+            <h4 className="text-success">Election is live</h4>
           ) : (
-            <h4 className="text-danger">Election not yet started</h4>
+            <h4 className="text-danger">Election is not live</h4>
           )}
           <div className="navbarNav">
             <button
