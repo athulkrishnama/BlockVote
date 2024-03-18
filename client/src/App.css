@@ -14,5 +14,9 @@
 
 .can-image{
     height: 10rem;
-    width: 5rem;
+}
+
+.card-image{
+    height: 15rem;
+    object-fit: fit;
 }

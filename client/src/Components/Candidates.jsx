@@ -23,7 +23,7 @@ function Candidates({ instance, account }) {
       account,
       candidate.name,
       12,
-      candidate.metaid
+      candidate.metaid.toLowerCase()
     );
     if (!result.error) {
       let formData = new FormData();

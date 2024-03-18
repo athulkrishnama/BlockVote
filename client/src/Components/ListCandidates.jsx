@@ -14,6 +14,7 @@ const getCandidates = async ()=>{
 
   // function to mask metaid
   const maskId = (metaid)=>{
+    metaid = metaid.toLowerCase()
     let maskedId = "0XXXXXX"
     maskedId += metaid.substring(metaid.length-10) 
     return maskedId
@@ -35,7 +36,7 @@ const getCandidates = async ()=>{
           candidates.map((can)=>{
               return(
                   <div key={can.candidateAddress} className="card col-md-3 mx-2">
-                      <img src={"http://localhost:8000/uploads/"+can.candidateAddress.toLowerCase()} alt="" className="card-image-top mt-2 rounded-2" />
+                      <img src={"http://localhost:8000/uploads/"+can.candidateAddress.toLowerCase()} alt="" className="card-image-top mt-2 rounded-2 card-image" />
                       <div className="card-body">
                         <h3 className="card-title">{can.name}</h3>
                         <p className="card-text">{can.candidateAddress&&maskId(can.candidateAddress)}</p>
